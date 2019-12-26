@@ -66,3 +66,8 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+### Additional notes
+If you’re learning React or creating a new single-page app, use Create React App.  https://github.com/facebook/create-react-app
+If you’re building a server-rendered website with Node.js, try Next.js.
+If you’re building a static content-oriented website, try Gatsby.
