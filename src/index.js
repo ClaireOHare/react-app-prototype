@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import './index.css'
 
 // Function component
-function Square(props) {
+function Square (props) {
     return (
         <button
             className="square"
@@ -16,10 +16,10 @@ function Square(props) {
 
 class Board extends React.Component {
 
-    renderSquare(index){
+    renderSquare (index){
         return <Square
-            value={this.props.squares[index]}
-            onClick={() => this.props.onClick(index)}
+            value = {this.props.squares[index]}
+            onClick = {() => this.props.onClick(index)}
         />
     }
 
@@ -48,14 +48,22 @@ class Board extends React.Component {
 
 class Game extends React.Component {
 
-    constructor(props) {
-        super(props)
+    constructor (props) {
+        super (props)
         this.state = {
             history: [{
                 squares: Array(9).fill(null),
             }],
             xIsNext: true,
+            stepNumber: 0,
         }
+    }
+
+    jumpTo (index) {
+        this.setState({
+            stepNumber: index,
+            xIsNext: (step % 2) === 0,
+        })
     }
 
     handleClick (index) {
@@ -69,16 +77,28 @@ class Game extends React.Component {
 
         squares[index] = this.state.xIsNext ? 'X' : 'O'
 
-        this.setState({
+        this.setState ({
             history: history.concat([{ squares: squares, }]),
             xIsNext: !this.state.xIsNext,
         })
     }
 
     render () {
-        const history = this.state.history;
+        const history = this.state.history
         const current = history[history.length - 1]
-        const winner = calculateWinner(current.squares);
+        const winner = calculateWinner(current.squares)
+
+        const moves = history.map ((value, index) => {
+            const description = index ?
+            'Go to move #' + index :
+            'Go to game start'
+
+            return (
+                <li key={index}>
+                    <button onClick={() => this.jumpTo (index)}> {description} </button>
+                </li>
+            )
+        })
 
         let status
         if (winner) {
@@ -91,20 +111,18 @@ class Game extends React.Component {
             <div className="game">
                 <div className="game-board">
                     <Board 
-            squares={current.squares} // not sure where this is declared?
-            onClick={(i) => this.handleClick(i)}
+                        squares = {current.squares} // not sure where this is declared?
+                        onClick = {(i) => this.handleClick(i)}
                     />
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
-                    <ol>{/* TODO */}</ol>
+                    <ol>{moves}</ol>
                 </div>
             </div>
         )
     }
 }
-
-// ========================================
 
 ReactDOM.render (
     <Game />,
