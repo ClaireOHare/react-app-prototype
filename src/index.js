@@ -59,9 +59,9 @@ class Game extends React.Component {
         }
     }
 
-    jumpTo (index) {
+    jumpTo (step) {
         this.setState({
-            stepNumber: index,
+            stepNumber: step,
             xIsNext: (step % 2) === 0,
         })
     }
