@@ -67,9 +67,9 @@ class Game extends React.Component {
     }
 
     handleClick (index) {
-        const history = this.state.history
+        const history = this.state.history.slice (0, this.state.stepNumber + 1)
         const current = history[history.length - 1]
-        const squares = current.squares.slice()
+        const squares = current.squares.slice ()
 
         if (calculateWinner(squares) || squares[index]) {
             return
@@ -79,13 +79,14 @@ class Game extends React.Component {
 
         this.setState ({
             history: history.concat([{ squares: squares, }]),
+            stepNumber: history.length,
             xIsNext: !this.state.xIsNext,
         })
     }
 
     render () {
         const history = this.state.history
-        const current = history[history.length - 1]
+        const current = history[this.state.stepNumber]
         const winner = calculateWinner(current.squares)
 
         const moves = history.map ((value, index) => {
@@ -112,7 +113,7 @@ class Game extends React.Component {
                 <div className="game-board">
                     <Board 
                         squares = {current.squares} // not sure where this is declared?
-                        onClick = {(i) => this.handleClick(i)}
+                        onClick = {(index) => this.handleClick(index)}
                     />
                 </div>
                 <div className="game-info">
@@ -126,7 +127,7 @@ class Game extends React.Component {
 
 ReactDOM.render (
     <Game />,
-    document.getElementById('root')
+    document.getElementById ('root')
 );
 
 function calculateWinner (squares) {
